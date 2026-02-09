@@ -1,0 +1,786 @@
+
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Matematika SMA - Edukasi Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            background: linear-gradient(rgba(248, 250, 252, 0.9), rgba(248, 250, 252, 0.9)), 
+                        url(https://png.pngtree.com/thumb_back/fh260/background/20210814/pngtree-color-pen-doodle-education-math-formula-background-image_763092.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), 
+                        url('https://images.unsplash.com/photo-1509228468518-180dd482195b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            border-radius: 0 0 3rem 3rem;
+        }
+
+        .math-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .math-card:active {
+            transform: scale(0.95);
+        }
+
+        .formula-box { 
+            font-family: 'Courier New', Courier, monospace; 
+            background: #eff6ff; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .step-indicator { 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #2563eb; 
+            color: white; 
+            border-radius: 50%; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            margin-right: 10px;
+        }
+
+        .quiz-option { 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border: 2px solid #e2e8f0; 
+            width: 100%; 
+            text-align: left; 
+            padding: 1.25rem; 
+            border-radius: 12px; 
+            background: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; color: #166534; }
+        .quiz-option.wrong { border-color: #ef4444; background-color: #fef2f2; color: #991b1b; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        @media (max-width: 640px) {
+            .modal-content-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <header class="hero-bg text-white pt-16 pb-24 px-6 text-center shadow-2xl relative mb-12">
+        <div class="max-w-4xl mx-auto z-10 relative">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">Portal Matematika SMA</h1>
+            <p class="text-slate-200 text-base md:text-xl mb-10 opacity-90 max-w-2xl mx-auto font-light italic">
+                "Jembatan Menuju Pemahaman Logika Tanpa Batas"
+            </p>
+            
+            <div class="relative max-w-xl mx-auto">
+                <input type="text" id="searchInput" placeholder="Cari materi (misal: Matriks)..." 
+                       class="w-full pl-14 pr-6 py-5 rounded-full text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500 shadow-2xl transition-all text-lg border-none">
+                <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-32 relative z-20">
+        <div class="flex overflow-x-auto gap-4 no-scrollbar mb-10 pb-4 justify-start md:justify-center">
+            <button onclick="filterGrade('all')" class="grade-btn flex-shrink-0 px-10 py-4 rounded-full bg-blue-600 text-white font-bold shadow-xl transition active:scale-95">Semua</button>
+            <button onclick="filterGrade('10')" class="grade-btn flex-shrink-0 px-10 py-4 rounded-full bg-white text-slate-600 font-bold shadow-lg transition active:scale-95">Kelas 10</button>
+            <button onclick="filterGrade('11')" class="grade-btn flex-shrink-0 px-10 py-4 rounded-full bg-white text-slate-600 font-bold shadow-lg transition active:scale-95">Kelas 11</button>
+            <button onclick="filterGrade('12')" class="grade-btn flex-shrink-0 px-10 py-4 rounded-full bg-white text-slate-600 font-bold shadow-lg transition active:scale-95">Kelas 12</button>
+        </div>
+
+        <div id="materiGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Injected by JS -->
+        </div>
+    </main>
+
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full h-[98vh] sm:h-auto sm:max-w-5xl sm:max-h-[90vh] sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col rounded-t-[2.5rem] transition-all duration-300">
+            <div class="p-6 md:p-8 border-b flex justify-between items-center bg-blue-700 text-white shrink-0">
+                <div>
+                    <h2 id="modalTitle" class="text-2xl md:text-3xl font-black leading-tight"></h2>
+                    <span id="modalGradeLabel" class="text-xs uppercase font-bold bg-blue-900/50 px-3 py-1 rounded-full mt-2 inline-block tracking-widest border border-white/20"></span>
+                </div>
+                <button onclick="closeModal()" class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition active:scale-90">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="modalBody" class="modal-content-container p-6 md:p-12 overflow-y-auto grow bg-slate-50 text-slate-800 leading-relaxed">
+                <!-- Content -->
+            </div>
+
+            <div class="p-6 border-t bg-white flex flex-col sm:flex-row gap-4 shrink-0 shadow-inner">
+                <a id="youtubeLink" href="#" target="_blank" class="bg-red-600 text-white py-4 px-8 rounded-2xl font-black text-center flex items-center justify-center gap-3 active:scale-95 transition shadow-lg shadow-red-200 uppercase tracking-wider">
+                    <i class="fab fa-youtube text-2xl"></i> Video Penjelasan
+                </a>
+                <button onclick="closeModal()" class="bg-slate-100 text-slate-700 py-4 px-8 rounded-2xl font-black active:scale-95 transition uppercase tracking-wider">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const materiData = [
+            // KELAS 10
+            {
+                id: 1, grade: '10', title: 'Eksponen & Logaritma',
+                desc: 'Memahami konsep pangkat (eksponen) dan kebalikannya (logaritma) untuk memodelkan pertumbuhan.',
+                icon: 'fa-superscript',
+                youtube: 'https://www.youtube.com/results?search_query=eksponen+dan+logaritma+kelas+10+matematika',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Mendalam</h3>
+                        <p class="mb-4 text-justify">Eksponen adalah operasi matematika yang melibatkan dua bilangan: basis (a) dan pangkat (n). Secara matematis, aⁿ berarti mengalikan bilangan 'a' sebanyak 'n' kali. Logaritma adalah invers (kebalikan) dari eksponen. Jika eksponen mencari hasil pemangkatan, logaritma mencari berapa pangkat yang dibutuhkan untuk mendapatkan suatu angka.</p>
+                        <p class="mb-4">Hubungan fundamental keduanya adalah: <span class="formula-box">aⁿ = b ⇔ ªlog b = n</span>.</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Sifat-Sifat Penting:</h4>
+                        <ul class="list-disc ml-6 space-y-2 mb-6 text-sm">
+                            <li><strong>Perkalian:</strong> <span class="formula-box">ªlog (b·c) = ªlog b + ªlog c</span>. Logaritma mengubah perkalian menjadi penjumlahan.</li>
+                            <li><strong>Pembagian:</strong> <span class="formula-box">ªlog (b/c) = ªlog b - ªlog c</span>. Logaritma mengubah pembagian menjadi pengurangan.</li>
+                            <li><strong>Pangkat:</strong> <span class="formula-box">ªlog bⁿ = n · ªlog b</span>. Pangkat pada numerus dapat "turun" menjadi pengali depan.</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan nilai dari ²log 48 - ²log 3 + ⁵log 125.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Kelompokkan Sesuai Basis:</strong> Selesaikan bagian basis 2 terlebih dahulu menggunakan sifat pengurangan (pembagian): <span class="formula-box">²log (48/3) = ²log 16</span>.</p>
+                                <p><span class="step-indicator">2</span> <strong>Sederhanakan Hasil Pertama:</strong> Karena 16 = 2⁴, maka <span class="formula-box">²log 2⁴ = 4</span>.</p>
+                                <p><span class="step-indicator">3</span> <strong>Selesaikan Basis Kedua:</strong> Selesaikan ⁵log 125. Karena 125 = 5³, maka <span class="formula-box">⁵log 5³ = 3</span>.</p>
+                                <p><span class="step-indicator">4</span> <strong>Jumlahkan Hasil Akhir:</strong> 4 + 3 = 7.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban Akhir: 7</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Pemahaman (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Berapakah nilai dari ⁷log 49?</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">2 (Karena 7² = 49)</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">7</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Sifat logaritma: ªlog b + ªlog c setara dengan...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">ªlog (b · c)</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">ªlog (b + c)</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Jika 2³ = 8, maka bentuk logaritmanya adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">²log 8 = 3</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">⁸log 2 = 3</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 2, grade: '10', title: 'Vektor di R2 & R3',
+                desc: 'Memahami besaran yang memiliki nilai dan arah, serta aplikasinya dalam koordinat.',
+                icon: 'fa-location-arrow',
+                youtube: 'https://www.youtube.com/results?search_query=vektor+matematika+kelas+10',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Penjelasan Konsep</h3>
+                        <p class="mb-4 text-justify">Vektor adalah besaran yang ditentukan oleh nilai (panjang) dan arah. Berbeda dengan skalar yang hanya memiliki nilai (seperti massa), vektor sangat penting dalam fisika dan teknik. Di ruang dua dimensi (R2), vektor direpresentasikan dengan koordinat (x, y). Di ruang tiga dimensi (R3), kita menambahkan sumbu z (x, y, z).</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Operasi Penting:</h4>
+                        <ul class="list-disc ml-6 space-y-2 mb-6">
+                            <li><strong>Modulus (Panjang):</strong> <span class="formula-box">|v| = √(x² + y² + z²)</span>.</li>
+                            <li><strong>Dot Product (Perkalian Titik):</strong> Menghasilkan skalar. Jika θ adalah sudut di antara dua vektor a dan b, maka <span class="formula-box">a · b = |a||b| cos θ</span>.</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan nilai dot product vektor a = (2, 3, -1) dan b = (4, -2, 5).</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Gunakan Rumus Koordinat:</strong> <span class="formula-box">a · b = (x1·x2) + (y1·y2) + (z1·z2)</span>.</p>
+                                <p><span class="step-indicator">2</span> <strong>Substitusi Angka:</strong> (2·4) + (3·-2) + (-1·5) = 8 + (-6) + (-5).</p>
+                                <p><span class="step-indicator">3</span> <strong>Hitung:</strong> 8 - 6 - 5 = -3.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: -3</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Vektor (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Berapakah panjang vektor v = (3, 4)?</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">5 (Akar dari 9+16)</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">7</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Jika dua vektor saling tegak lurus, maka dot product-nya adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">0</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">1</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Vektor yang pangkalnya di (0,0) disebut vektor...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Vektor Posisi</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Vektor Bebas</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3, grade: '10', title: 'Persamaan & Fungsi Kuadrat',
+                desc: 'Mencari akar-akar dari persamaan derajat dua serta menggambar grafiknya.',
+                icon: 'fa-square-root-alt',
+                youtube: 'https://www.youtube.com/results?search_query=persamaan+kuadrat+kelas+10',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Fungsi & Grafik</h3>
+                        <p class="mb-4 text-justify">Persamaan kuadrat memiliki bentuk umum ax² + bx + c = 0. Akar-akarnya adalah nilai x yang membuat persamaan tersebut bernilai nol. Grafiknya berbentuk parabola yang simetris. Karakteristik grafik ditentukan oleh nilai diskriminan (D = b² - 4ac) dan nilai 'a'.</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Poin Penting:</h4>
+                        <ul class="list-disc ml-6 space-y-2 mb-6 text-sm">
+                            <li><strong>Nilai 'a':</strong> Jika a > 0 parabola terbuka ke atas (senyum), jika a < 0 terbuka ke bawah (sedih).</li>
+                            <li><strong>Diskriminan (D):</strong> Jika D > 0 ada 2 akar real, D = 0 ada 1 akar kembar, D < 0 tidak ada akar real.</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan akar-akar persamaan x² - 5x + 6 = 0.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Cari Faktor:</strong> Kita butuh dua angka yang jika dikali hasilnya 6, dan jika dijumlah hasilnya -5.</p>
+                                <p><span class="step-indicator">2</span> <strong>Identifikasi Angka:</strong> Angka tersebut adalah -2 dan -3.</p>
+                                <p><span class="step-indicator">3</span> <strong>Bentuk Faktorisasi:</strong> (x - 2)(x - 3) = 0.</p>
+                                <p><span class="step-indicator">4</span> <strong>Tentukan Akar:</strong> x₁ = 2 atau x₂ = 3.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: {2, 3}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Kuadrat (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Rumus Diskriminan (D) adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">b² - 4ac</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">b² + 4ac</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Titik puncak parabola disebut juga titik...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Ekstrim</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Potong</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Jika x² - 4 = 0, maka akar-akarnya adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">2 dan -2</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">4 dan -4</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 4, grade: '10', title: 'Trigonometri Dasar',
+                desc: 'Hubungan antara sudut dan sisi pada segitiga siku-siku serta tabel nilai istimewa.',
+                icon: 'fa-drafting-compass',
+                youtube: 'https://www.youtube.com/results?search_query=trigonometri+dasar+kelas+10',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Dasar Perbandingan</h3>
+                        <p class="mb-4 text-justify">Trigonometri mempelajari hubungan antara sudut dan panjang sisi segitiga. Pada segitiga siku-siku, kita mendefinisikan tiga rasio utama: Sinus, Cosinus, dan Tangen. Istilah populernya adalah <strong>Demi</strong> (Depan/Miring), <strong>Sami</strong> (Samping/Miring), dan <strong>Desa</strong> (Depan/Samping).</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Tabel Sudut Istimewa (Wajib Hafal):</h4>
+                        <ul class="list-disc ml-6 space-y-1 mb-6 text-sm">
+                            <li><strong>30°:</strong> Sin = 1/2, Cos = 1/2√3, Tan = 1/3√3</li>
+                            <li><strong>45°:</strong> Sin = 1/2√2, Cos = 1/2√2, Tan = 1</li>
+                            <li><strong>60°:</strong> Sin = 1/2√3, Cos = 1/2, Tan = √3</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Seseorang melihat puncak gedung dengan sudut elevasi 30°. Jika jarak orang ke gedung 12m, berapa tinggi gedung?</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Pilih Rasio:</strong> Kita tahu Jarak Samping (12m) dan mencari Jarak Depan (Tinggi). Gunakan <strong>Tangen</strong>.</p>
+                                <p><span class="step-indicator">2</span> <strong>Rumus:</strong> tan 30° = Tinggi / 12.</p>
+                                <p><span class="step-indicator">3</span> <strong>Hitung:</strong> 1/3√3 = Tinggi / 12 ⇒ Tinggi = 12 · (1/3√3).</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 4√3 meter</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Trigonometri (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Nilai Sin 90° adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">1</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">0</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Kebalikan dari Sinus adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Cosecan</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Secan</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Pada kuadran II, yang bernilai positif adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Sinus</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Cosinus</button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // KELAS 11
+            {
+                id: 5, grade: '11', title: 'Matriks & Transformasi',
+                desc: 'Manipulasi data dalam baris dan kolom serta perhitungan invers matriks.',
+                icon: 'fa-table',
+                youtube: 'https://www.youtube.com/results?search_query=matriks+kelas+11+lengkap',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Determinan & Invers</h3>
+                        <p class="mb-4 text-justify">Matriks adalah susunan bilangan dalam bentuk baris dan kolom. Determinan adalah nilai skalar yang sangat penting untuk menentukan apakah sebuah matriks memiliki invers. Invers matriks (A⁻¹) digunakan untuk menyelesaikan sistem persamaan linear.</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Rumus Utama (Ordo 2x2):</h4>
+                        <ul class="list-disc ml-6 space-y-2 mb-6">
+                            <li><strong>Determinan:</strong> ad - bc.</li>
+                            <li><strong>Invers:</strong> (1/det) · [d -b; -c a].</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan Invers dari matriks A = [[3, 2], [7, 5]].</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Cari Determinan:</strong> (3·5) - (2·7) = 15 - 14 = 1.</p>
+                                <p><span class="step-indicator">2</span> <strong>Gunakan Rumus Invers:</strong> (1/1) · [[5, -2], [-7, 3]].</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: [[5, -2], [-7, 3]]</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Matriks (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Syarat perkalian matriks A x B adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Kolom A = Baris B</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Baris A = Kolom B</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Matriks identitas ordo 2x2 adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">[[1, 0], [0, 1]]</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">[[0, 1], [1, 0]]</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Matriks Transpose adalah matriks yang...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Tukar baris jadi kolom</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Dikali negatif</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 6, grade: '11', title: 'Persamaan Lingkaran',
+                desc: 'Menentukan kedudukan titik terhadap lingkaran dan garis singgung.',
+                icon: 'fa-circle',
+                youtube: 'https://www.youtube.com/results?search_query=persamaan+lingkaran+kelas+11',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Persamaan</h3>
+                        <p class="mb-4 text-justify">Lingkaran didefinisikan sebagai himpunan titik-titik yang berjarak sama (jari-jari) terhadap satu titik pusat. Persamaan lingkaran berubah tergantung posisi pusatnya. Jika pusat di (0,0), persamaannya sangat sederhana. Jika di (a,b), kita menggunakan translasi.</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Bentuk Umum:</h4>
+                        <ul class="list-disc ml-6 space-y-2 mb-6">
+                            <li><strong>Pusat (0,0):</strong> x² + y² = r²</li>
+                            <li><strong>Pusat (a,b):</strong> (x - a)² + (y - b)² = r²</li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan persamaan lingkaran yang berpusat di (2, -3) dengan jari-jari 4.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Identifikasi Nilai:</strong> a = 2, b = -3, r = 4.</p>
+                                <p><span class="step-indicator">2</span> <strong>Masukkan ke Rumus:</strong> (x - 2)² + (y - (-3))² = 4².</p>
+                                <p><span class="step-indicator">3</span> <strong>Sederhanakan:</strong> (x - 2)² + (y + 3)² = 16.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: (x - 2)² + (y + 3)² = 16</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Lingkaran (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Pusat dari lingkaran (x + 5)² + (y - 1)² = 9 adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">(-5, 1)</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">(5, -1)</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Jika titik (x,y) berada DI DALAM lingkaran, maka...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">x² + y² < r²</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">x² + y² = r²</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Jari-jari lingkaran x² + y² = 100 adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">10</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">100</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 7, grade: '11', title: 'Turunan (Diferensial)',
+                desc: 'Aplikasi turunan dalam menentukan interval naik/turun dan nilai stasioner.',
+                icon: 'fa-chart-line',
+                youtube: 'https://www.youtube.com/results?search_query=turunan+fungsi+aljabar+kelas+11',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Turunan</h3>
+                        <p class="mb-4 text-justify">Turunan mengukur tingkat perubahan suatu fungsi terhadap variabelnya. Secara geometri, turunan di suatu titik adalah kemiringan (gradien) garis singgung kurva di titik tersebut. Aturan dasarnya sangat konsisten: pangkat turun menjadi pengali, dan pangkat variabel berkurang satu.</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Aturan Rantai & Pangkat:</h4>
+                        <p class="mb-4">Jika <span class="formula-box">f(x) = axⁿ</span>, maka <span class="formula-box">f'(x) = n · axⁿ⁻¹</span>.</p>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Tentukan turunan pertama dari f(x) = 4x³ + 2x² - 5x + 7.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Turunkan Suku Pertama:</strong> 3 · 4x³⁻¹ = 12x².</p>
+                                <p><span class="step-indicator">2</span> <strong>Turunkan Suku Kedua:</strong> 2 · 2x²⁻¹ = 4x.</p>
+                                <p><span class="step-indicator">3</span> <strong>Turunkan Suku Ketiga & Keempat:</strong> Turunan -5x adalah -5. Turunan konstanta 7 adalah 0.</p>
+                                <p class="font-black text-green-700 mt-2">Hasil: f'(x) = 12x² + 4x - 5</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Turunan (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Turunan dari sin(x) adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">cos(x)</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">-cos(x)</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Turunan dari fungsi konstanta f(x) = 100 adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">0</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">100</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Jika f'(x) > 0 pada suatu interval, maka fungsi tersebut...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Naik</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Turun</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 8, grade: '11', title: 'Limit Fungsi Aljabar',
+                desc: 'Memahami nilai pendekatan suatu fungsi saat variabel mendekati titik tertentu.',
+                icon: 'fa-compress-arrows-alt',
+                youtube: 'https://www.youtube.com/results?search_query=limit+fungsi+aljabar+kelas+11',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Limit</h3>
+                        <p class="mb-4 text-justify">Limit menjelaskan perilaku suatu fungsi ketika variabelnya mendekati suatu nilai tertentu, tetapi tidak harus mencapai nilai tersebut. Jika substitusi langsung menghasilkan bentuk tak tentu (0/0), kita harus menggunakan teknik faktorisasi atau perkalian sekawan.</p>
+                        
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Hitung limit x→2 dari (x² - 4) / (x - 2).</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Coba Substitusi:</strong> (2²-4)/(2-2) = 0/0 (Bentuk Tak Tentu).</p>
+                                <p><span class="step-indicator">2</span> <strong>Faktorkan Pembilang:</strong> x² - 4 = (x - 2)(x + 2).</p>
+                                <p><span class="step-indicator">3</span> <strong>Sederhanakan:</strong> Coret (x-2) sehingga sisa (x + 2).</p>
+                                <p><span class="step-indicator">4</span> <strong>Substitusi Kembali:</strong> 2 + 2 = 4.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Limit (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Apa yang dilakukan jika substitusi limit menghasilkan 0/0?</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Faktorisasi</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Langsung selesai</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Limit x→∞ dari 1/x adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">0</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Tak hingga</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Limit kiri harus sama dengan limit kanan agar limit...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Ada/Terdefinisi</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Bernilai Nol</button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // KELAS 12
+            {
+                id: 9, grade: '12', title: 'Dimensi Tiga (Geometri)',
+                desc: 'Menghitung jarak antar titik, garis, dan bidang dalam bangun ruang.',
+                icon: 'fa-cube',
+                youtube: 'https://www.youtube.com/results?search_query=dimensi+tiga+matematika+kelas+12',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Jarak di Ruang</h3>
+                        <p class="mb-4 text-justify">Geometri ruang mempelajari objek tiga dimensi seperti kubus, balok, dan limas. Kunci utamanya adalah penggunaan Teorema Pythagoras secara berulang untuk menemukan jarak terpendek. Jarak titik ke garis atau bidang selalu diukur secara tegak lurus (proyeksi).</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Rumus Cepat Kubus (Rusuk s):</h4>
+                        <ul class="list-disc ml-6 space-y-1 mb-6">
+                            <li>Diagonal Sisi: <span class="formula-box">s√2</span></li>
+                            <li>Diagonal Ruang: <span class="formula-box">s√3</span></li>
+                        </ul>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Kubus ABCD.EFGH rusuk 8 cm. Berapa jarak titik A ke titik G?</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Analisis:</strong> Titik A ke G adalah Diagonal Ruang kubus.</p>
+                                <p><span class="step-indicator">2</span> <strong>Gunakan Rumus Cepat:</strong> Diagonal Ruang = s√3.</p>
+                                <p><span class="step-indicator">3</span> <strong>Hitung:</strong> Karena rusuk s = 8, maka jaraknya 8√3 cm.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 8√3 cm</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Geometri (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Berapa banyak diagonal ruang pada sebuah kubus?</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">4</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">12</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Jarak titik ke garis diukur melalui garis yang...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Tegak lurus</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Sejajar</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Bidang ACGE pada kubus disebut bidang...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Diagonal</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Sisi</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 10, grade: '12', title: 'Statistika Data Kelompok',
+                desc: 'Menghitung Simpangan Baku, Varians, dan Kuartil data kelompok.',
+                icon: 'fa-chart-bar',
+                youtube: 'https://www.youtube.com/results?search_query=statistika+data+kelompok+kelas+12',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Pemusatan & Penyebaran</h3>
+                        <p class="mb-4 text-justify">Statistika di kelas 12 berfokus pada data berkelompok (dalam tabel distribusi frekuensi). Kita belajar mencari nilai tengah (Median), nilai sering muncul (Modus), serta seberapa jauh data tersebar dari rata-rata (Simpangan Baku).</p>
+                        
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Jika varians suatu data kelompok adalah 25, hitunglah simpangan bakunya.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Pahami Hubungan:</strong> Simpangan Baku adalah akar kuadrat dari Varians.</p>
+                                <p><span class="step-indicator">2</span> <strong>Hitung:</strong> S = √25.</p>
+                                <p><span class="step-indicator">3</span> <strong>Hasil:</strong> 5.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 5</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Statistika (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Kuartil kedua (Q2) sama nilainya dengan...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Median</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Modus</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Apa nama lain dari Rata-rata?</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Mean</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Range</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Data yang paling sering muncul disebut...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Modus</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Median</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 11, grade: '12', title: 'Integral Fungsi Aljabar',
+                desc: 'Memahami antiturunan dan cara menghitung luas daerah di bawah kurva.',
+                icon: 'fa-infinity',
+                youtube: 'https://www.youtube.com/results?search_query=integral+fungsi+aljabar+kelas+12',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Antiturunan</h3>
+                        <p class="mb-4 text-justify">Integral adalah proses kebalikan dari turunan. Jika turunan mencari kemiringan, integral sering digunakan untuk mencari luas daerah di bawah kurva atau volume benda putar. Ada dua jenis: Integral Tak Tentu (hasilnya fungsi + C) dan Integral Tentu (hasilnya angka).</p>
+                        
+                        <h4 class="font-bold text-slate-700 mb-3 underline">Rumus Dasar:</h4>
+                        <p class="mb-4"><span class="formula-box">∫ xⁿ dx = (1 / n+1) xⁿ⁺¹ + C</span></p>
+
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Hitunglah hasil dari ∫ (6x² + 4x) dx.</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Integralkan Suku Pertama:</strong> (6/3)x³ = 2x³.</p>
+                                <p><span class="step-indicator">2</span> <strong>Integralkan Suku Kedua:</strong> (4/2)x² = 2x².</p>
+                                <p><span class="step-indicator">3</span> <strong>Gabungkan:</strong> Tambahkan konstanta C di akhir.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 2x³ + 2x² + C</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Integral (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Integral dari konstanta k adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">kx + C</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">0</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Nama lain dari Integral adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Antiturunan</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Diferensial</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Integral tentu digunakan untuk mencari...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Luas Daerah</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Gradien Garis</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 12, grade: '12', title: 'Peluang & Kombinatorika',
+                desc: 'Menguasai konsep Permutasi, Kombinasi, dan Peluang Kejadian.',
+                icon: 'fa-dice',
+                youtube: 'https://www.youtube.com/results?search_query=peluang+matematika+kelas+12',
+                content: `
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">I. Teori Pencacahan</h3>
+                        <p class="mb-4 text-justify">Peluang mengukur kemungkinan terjadinya suatu peristiwa. Kunci utamanya adalah menghitung jumlah kemungkinan. <strong>Permutasi</strong> digunakan jika urutan penting (seperti password), sedangkan <strong>Kombinasi</strong> digunakan jika urutan tidak penting (seperti memilih delegasi).</p>
+                        
+                        <h3 class="text-2xl font-black text-blue-800 mb-4 border-b-2 border-blue-200 pb-2">II. Bedah Contoh Soal</h3>
+                        <div class="step-card">
+                            <p class="font-bold mb-4 italic">Soal: Berapa banyak cara memilih 2 siswa dari 10 siswa untuk mengikuti lomba?</p>
+                            <div class="space-y-4">
+                                <p><span class="step-indicator">1</span> <strong>Pilih Metode:</strong> Urutan tidak penting (siapa yang dipilih duluan tidak pengaruh). Gunakan Kombinasi 10C2.</p>
+                                <p><span class="step-indicator">2</span> <strong>Rumus:</strong> 10! / (2! · 8!).</p>
+                                <p><span class="step-indicator">3</span> <strong>Hitung:</strong> (10 · 9) / 2 = 45.</p>
+                                <p class="font-black text-green-700 mt-2">Jawaban: 45 cara</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-8 rounded-3xl border-2 border-dashed border-orange-300">
+                        <h4 class="font-black text-orange-700 mb-4 text-xl">Kuis Peluang (3 Soal)</h4>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">1. Nilai peluang suatu kejadian mustahil adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">0</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">1</button>
+                        </div>
+                        <div class="mb-8">
+                            <p class="mb-4 font-medium">2. Jika urutan DIPERHATIKAN, kita menggunakan...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">Permutasi</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">Kombinasi</button>
+                        </div>
+                        <div>
+                            <p class="mb-4 font-medium">3. Hasil dari 0! (nol faktorial) adalah...</p>
+                            <button onclick="checkQuiz(this, true)" class="quiz-option">1</button>
+                            <button onclick="checkQuiz(this, false)" class="quiz-option">0</button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const grid = document.getElementById('materiGrid');
+        const modal = document.getElementById('modalOverlay');
+        const searchInput = document.getElementById('searchInput');
+
+        function displayMateri(items) {
+            grid.innerHTML = items.map(item => `
+                <div class="math-card p-8 rounded-[2rem] shadow-xl flex flex-col cursor-pointer hover:shadow-2xl hover:-translate-y-2 border border-white/40" onclick="openMateri(${item.id})">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 bg-blue-100/80 rounded-2xl flex items-center justify-center text-blue-600 text-3xl">
+                            <i class="fas ${item.icon}"></i>
+                        </div>
+                        <span class="text-[10px] font-black text-blue-700 bg-blue-100 px-4 py-1.5 rounded-full border border-blue-200 uppercase tracking-widest">Kelas ${item.grade}</span>
+                    </div>
+                    <h3 class="text-xl font-extrabold mb-3 text-slate-800">${item.title}</h3>
+                    <p class="text-slate-500 text-sm flex-grow line-clamp-3">${item.desc}</p>
+                    <div class="mt-6 flex items-center text-blue-600 font-black text-xs uppercase tracking-widest group">
+                        Buka Penjelasan <i class="fas fa-arrow-right ml-3 transition-transform group-hover:translate-x-2"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openMateri(id) {
+            const item = materiData.find(m => m.id === id);
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalGradeLabel').innerText = `Matematika Kelas ${item.grade}`;
+            document.getElementById('modalBody').innerHTML = item.content;
+            document.getElementById('youtubeLink').href = item.youtube;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function checkQuiz(btn, isCorrect) {
+            const options = btn.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            if (isCorrect) {
+                btn.classList.add('correct');
+                btn.innerHTML += '<i class="fas fa-check-circle ml-auto text-xl"></i>';
+            } else {
+                btn.classList.add('wrong');
+                btn.innerHTML += '<i class="fas fa-times-circle ml-auto text-xl"></i>';
+            }
+        }
+
+        function filterGrade(grade) {
+            const filtered = grade === 'all' ? materiData : materiData.filter(m => m.grade === grade);
+            displayMateri(filtered);
+            
+            document.querySelectorAll('.grade-btn').forEach(btn => {
+                btn.classList.replace('bg-blue-600', 'bg-white');
+                btn.classList.replace('text-white', 'text-slate-600');
+            });
+            event.currentTarget.classList.replace('bg-white', 'bg-blue-600');
+            event.currentTarget.classList.replace('text-slate-600', 'text-white');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = materiData.filter(m => m.title.toLowerCase().includes(val) || m.desc.toLowerCase().includes(val));
+            displayMateri(filtered);
+        });
+
+        window.onload = () => displayMateri(materiData);
+        
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) closeModal();
+        });
+    </script>
+</body>
+</html>
